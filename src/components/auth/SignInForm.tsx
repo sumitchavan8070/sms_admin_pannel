@@ -7,7 +7,7 @@ import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,36 +18,51 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const router = useRouter();
+  const router = useRouter(); 
 
-const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-  setError(null);
-  setLoading(true);
+  const searchParams = useSearchParams();
 
-  try {
-    const res = await fetch("http://172.23.17.194:3000/mobileapi/v1/auth/client-login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+  const from = searchParams.get("from") || "/";
 
-    const data = await res.json();
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
 
-    // Check API status
-    if (data.status !== 1 || !data.token) {
-      throw new Error(data.message || "Login failed");
+    try {
+      const res = await fetch("http://172.23.17.194:3000/mobileapi/v1/auth/client-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+ console.log(data,"data.status !== 1 || !data.token")
+      // Check API status
+      if (data.status !== 1 || !data.token) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      const cookieRes = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: data.token }),
+      });
+
+      console.log(from,"!cookieRes.ok")
+      if (!cookieRes.ok) {
+        throw new Error("Failed to set cookie");
+      }
+
+      // Store token and redirect
+      // localStorage.setItem("token", data.token);
+      router.push(from);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-
-    // Store token and redirect
-    localStorage.setItem("token", data.token);
-    router.push("/");
-  } catch (err: any) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="flex flex-col flex-1 lg:w-1/2 w-full">
