@@ -56,6 +56,8 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <AppSidebar user={user} />
+
+      
       <main className="flex-1">
         <div className="flex items-center gap-2 p-4 border-b">
           <SidebarTrigger />

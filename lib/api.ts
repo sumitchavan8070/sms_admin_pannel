@@ -1,4 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api"
+import { toast } from "sonner"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://172.23.17.194:8080/api"
 
 class ApiClient {
   private baseURL: string
@@ -28,21 +29,20 @@ class ApiClient {
 
   private async request(endpoint: string, options: RequestInit = {}) {
     const url = `${this.baseURL}${endpoint}`
-    
-  console.log(`url ------ ${url}`)
+    toast.error(`api url : ${url}`)
+
+
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      ...(options.headers instanceof Headers
-        ? Object.fromEntries(options.headers.entries())
-        : Array.isArray(options.headers)
-          ? Object.fromEntries(options.headers)
-          : (options.headers as Record<string, string>)),
-    }
+      "Accept": "application/json"
+    } 
 
     if (this.token) {
       headers["Authorization"] = `Bearer ${this.token}`
     }
 
+    console.log(headers);
+    
     try {
       const response = await fetch(url, {
         ...options,
@@ -71,7 +71,7 @@ class ApiClient {
   }
 
   async getStaffAttendance() {
-    
+
     return this.request("/v1/attendance/get-staff-attendance?staffId=6&date=2025-07-01")
   }
 

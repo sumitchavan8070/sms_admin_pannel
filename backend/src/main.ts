@@ -6,11 +6,12 @@ import { AppModule } from "./app.module"
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  // Enable CORS
   app.enableCors({
-    origin: ["http://localhost:3000", "http://localhost:3001"],
-    credentials: true,
-  })
+    origin: true, // Reflects request origin
+    credentials: true, // Allow Authorization/cookies
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  });
 
   // Global validation pipe
   app.useGlobalPipes(
@@ -35,12 +36,14 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   // SwaggerModule.setup("api/docs", app, document)
   SwaggerModule.setup('api/docs', app, document, {
-  jsonDocumentUrl: 'api-json', // this is important
-});
+    jsonDocumentUrl: 'api-json', // this is important
+  });
 
-  const port = process.env.PORT || 8080
-  await app.listen(port)
-  console.log(`Application is running on: http://localhost:${port}`)
-  console.log(`Swagger docs available at: http://localhost:${port}/api/docs`)
+  const port = 5050;
+
+  await app.listen(port); // <-- important change
+
+  console.log(`Application is running on: http://localhost:${port}`);
+  console.log(`Swagger docs available at: http://localhost:${port}/api/docs`);
 }
 bootstrap()

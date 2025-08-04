@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,6 +17,42 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
+
+
+
+// async function login(email: string , password: string) {
+//   const url = 'http://172.23.17.194:5050/api/auth/login';
+
+//   try {
+//     const response = await fetch(url, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Accept': 'application/json',
+//       },
+//       body: JSON.stringify({ email, password }),
+//     });
+
+//     if (!response.ok) {
+//       const errorData = await response.json().catch(() => ({}));
+//       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+//     console.log('Login success:', data);
+//     return data;
+
+//   } catch (error) {
+//     console.error('Login failed:', error);
+//   }
+// }
+
+// useEffect(() => {
+//   login('sxxs','asdasd');
+// },[])
+
+
+  
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
   console.log("Login submitted with:", email, password)
@@ -24,7 +60,9 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
     const response = await api.login({ email, password })
-    console.log("Login response:", response)
+    toast.success("Login response:", response)
+
+    
 
     if (response.access_token) {
       api.setToken(response.access_token)
@@ -34,9 +72,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       const role = response.user.role?.name?.toLowerCase()
       router.push(`/dashboard/${role || "admin"}`)
     }
+
   } catch (error) {
     console.error("Login error:", error)
-    toast.error("Login failed. Please check your credentials.")
+    // toast.error(`Login error: ${error}`)
+    // toast.error("Login failed. Please check your credentials.")
   } finally {
     setIsLoading(false)
   }
