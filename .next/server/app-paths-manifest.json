@@ -1,9 +1,8 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/dashboard/profile/page": "app/dashboard/profile/page.js",
   "/dashboard/teacher/page": "app/dashboard/teacher/page.js",
-  "/dashboard/teacher/attendance/page": "app/dashboard/teacher/attendance/page.js",
-  "/dashboard/admin/page": "app/dashboard/admin/page.js",
+  "/dashboard/profile/page": "app/dashboard/profile/page.js",
+  "/dashboard/teacher/students/page": "app/dashboard/teacher/students/page.js",
   "/dashboard/student/page": "app/dashboard/student/page.js"
 }
