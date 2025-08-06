@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Table,
   TableHeader,
@@ -11,6 +11,9 @@ import {
 import Image from "next/image"
 import Checkbox from "./input/Checkbox"
 import Badge from "./badge/Badge"
+import { api } from "@/lib/api" // Make sure this exists and exports `getClassAttendance()`
+import { toast } from "sonner"
+
 
 interface Student {
   id: number
@@ -23,51 +26,45 @@ interface Student {
   attendanceDate: string
 }
 
-const students: Student[] = [
-  {
-    id: 1,
-    name: "Aarav Sharma",
-    className: "Grade 10A",
-    profile: "/images/user/user-17.jpg",
-    status: "Present",
-    address: "123 MG Road, Delhi",
-    feesPaid: true,
-    attendanceDate: "2025-08-05",
-  },
-  {
-    id: 2,
-    name: "Isha Mehra",
-    className: "Grade 10B",
-    profile: "/images/user/user-18.jpg",
-    status: "Absent",
-    address: "21 Park Street, Mumbai",
-    feesPaid: false,
-    attendanceDate: "2025-08-05",
-  },
-  {
-    id: 3,
-    name: "Rohan Verma",
-    className: "Grade 9A",
-    profile: "/images/user/user-19.jpg",
-    status: "Leave",
-    address: "77 Residency Rd, Bangalore",
-    feesPaid: true,
-    attendanceDate: "2025-08-05",
-  },
-  {
-    id: 4,
-    name: "Priya Nair",
-    className: "Grade 11B",
-    profile: "/images/user/user-20.jpg",
-    status: "Present",
-    address: "56 Green Lane, Kochi",
-    feesPaid: true,
-    attendanceDate: "2025-08-05",
-  },
-]
-
 export default function StudentTable() {
+  const [students, setStudents] = useState<Student[]>([])
   const [selectedStudents, setSelectedStudents] = useState<number[]>([])
+
+  // Fetch data from API
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await api.getClassStudents()
+
+      if (res.status !== 1 || !Array.isArray(res.result)) {
+        toast.error("Failed to fetch students")
+        return
+      }
+
+      const formatted: Student[] = res.result.map((item: any) => ({
+        id: item.student_id,
+        name: item.student_name,
+        className: item.class_name,
+profile: (() => {
+  const [first, last] = item.student_name.split(" ");
+  const initials = `${first?.[0] || "J"}${last?.[0] || "D"}`.toUpperCase();
+  return `https://placehold.co/96x96/6366F1/FFFFFF?text=${initials}`;
+})(),        status: "Present", // default/fake status
+        address: "-",
+        feesPaid: true,
+        attendanceDate: new Date().toISOString().split("T")[0],
+      }))
+
+      setStudents(formatted)
+    } catch (error) {
+      console.error("Error fetching students:", error)
+      toast.error("An error occurred while fetching students")
+    }
+  }
+
+  fetchData()
+}, [])
+
 
   const toggleStudent = (id: number) => {
     setSelectedStudents((prev) =>
@@ -80,7 +77,6 @@ export default function StudentTable() {
       <div className="max-w-full overflow-x-auto">
         <div className="min-w-[1200px]">
           <Table>
-            {/* Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow>
                 <TableCell className="px-5 py-3">
@@ -104,7 +100,6 @@ export default function StudentTable() {
               </TableRow>
             </TableHeader>
 
-            {/* Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {students.map((student) => (
                 <TableRow

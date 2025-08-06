@@ -70,9 +70,9 @@ class ApiClient {
     })
   }
 
-  async getStaffAttendance() {
+  async getStaffAttendance(date :string) {
 
-    return this.request("/v1/attendance/get-staff-attendance?staffId=6&date=2025-07-01")
+    return this.request(`/attendance/get-attendance-by-user-and-date?date=${date}`)
   }
 
 
@@ -80,6 +80,12 @@ class ApiClient {
   async getProfile() {
     return this.request("/auth/profile")
   }
+
+getClassStudents(){
+    return this.request("/class/get-students-by-class?classId=1&schoolId=1")
+
+}
+
 
   // Users endpoints
   async getUsers() {

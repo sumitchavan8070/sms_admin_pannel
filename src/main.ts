@@ -8,7 +8,7 @@ async function bootstrap() {
 
   // Enable CORS
   // app.enableCors({
-  //   origin: ["http://localhost:3000", "http://localhost:3001", "http://172.23.17.194:5050"],
+  //   origin: ["http://localhost:3000", "http://localhost:3001", "https://fluttertales.tech"],
   //   credentials: true,
   // })
 
