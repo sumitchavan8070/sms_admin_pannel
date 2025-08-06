@@ -1,4 +1,4 @@
-// File: /Users/user/sc/Projects/Node/sms_admin_pannel/app/dashboard/student/page.tsx
+// File: /Users/sumitchavan/sc/Node js/sms_admin_pannel/app/dashboard/student/page.tsx
 import * as entry from '../../../../../app/dashboard/student/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

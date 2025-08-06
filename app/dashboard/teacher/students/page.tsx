@@ -59,36 +59,6 @@ export default function AttendanceManagement() {
     },
   ]
 
-  const studentAttendance = [
-    {
-      class: "Grade 10A",
-      totalStudents: 32,
-      present: 30,
-      absent: 2,
-      attendanceRate: 93.8,
-    },
-    {
-      class: "Grade 10B",
-      totalStudents: 28,
-      present: 26,
-      absent: 2,
-      attendanceRate: 92.9,
-    },
-    {
-      class: "Grade 11A",
-      totalStudents: 35,
-      present: 33,
-      absent: 2,
-      attendanceRate: 94.3,
-    },
-    {
-      class: "Grade 11B",
-      totalStudents: 30,
-      present: 29,
-      absent: 1,
-      attendanceRate: 96.7,
-    },
-  ]
 
   const attendanceStats = {
     staff: {
@@ -106,11 +76,7 @@ export default function AttendanceManagement() {
     },
   }
 
-  const filteredStaff = staffAttendance.filter(
-    (staff) =>
-      staff.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      staff.department.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+
 
   return (
     <>
