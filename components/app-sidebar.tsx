@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   Sidebar,
@@ -26,6 +27,8 @@ import {
   FaFileAlt,
   FaTh,
   FaPersonBooth,
+  FaChevronDown,
+  FaChevronRight,
 } from "react-icons/fa"
 import { ReactNode } from "react"
 
@@ -35,12 +38,14 @@ interface AppSidebarProps {
 
 interface MenuItem {
   title: string
-  url: string
+  url?: string
   icon: ReactNode
+  children?: MenuItem[]
 }
 
 export function AppSidebar({ user }: AppSidebarProps) {
   const router = useRouter()
+  const [openMenus, setOpenMenus] = useState<string[]>([])
   const userRole = user?.role?.name?.toLowerCase() || "guest"
 
   const handleLogout = () => {
@@ -48,13 +53,15 @@ export function AppSidebar({ user }: AppSidebarProps) {
     router.push("/login")
   }
 
+  const toggleMenu = (title: string) => {
+    setOpenMenus((prev) =>
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+    )
+  }
+
   const getMenuItems = (): MenuItem[] => {
-    const commonItems = [
-      {
-        title: "Dashboard",
-        url: `/dashboard/${userRole}`,
-        icon: <FaTh />,
-      },
+    const commonItems: MenuItem[] = [
+      { title: "Dashboard", url: `/dashboard/${userRole}`, icon: <FaTh /> },
     ]
 
     switch (userRole) {
@@ -64,100 +71,70 @@ export function AppSidebar({ user }: AppSidebarProps) {
           ...commonItems,
           {
             title: "Students",
-            url: "/dashboard/admin/students",
             icon: <FaGraduationCap />,
+            children: [
+              {
+                title: "Student List", url: "/dashboard/admin/students",
+                icon: undefined
+              },
+              {
+                title: "Add Student", url: "/dashboard/admin/students/add",
+                icon: undefined
+              },
+            ],
           },
           {
             title: "Staff",
-            url: "/dashboard/admin/staff",
             icon: <FaUsers />,
+            children: [
+              {
+                title: "Staff List", url: "/dashboard/admin/staff",
+                icon: undefined
+              },
+              {
+                title: "Add Staff", url: "/dashboard/admin/staff/add",
+                icon: undefined
+              },
+            ],
           },
-          {
-            title: "Attendance",
-            url: "/dashboard/principal/attendance",
-            icon: <FaCalendarAlt />,
-          },
-          {
-            title: "Fees",
-            url: "/dashboard/admin/fees",
-            icon: <FaDollarSign />,
-          },
-          {
-            title: "Reports",
-            url: "/dashboard/admin/reports",
-            icon: <FaFileAlt />,
-          },
-
-                 {
-            title: "Profile",
-            url: "/dashboard/profile",
-            icon: <FaPersonBooth />,
-          },
-          {
-            title: "Settings",
-            url: "/dashboard/admin/settings",
-            icon: <FaCog />,
-          },
+          { title: "Attendance", url: "/dashboard/principal/attendance", icon: <FaCalendarAlt /> },
+          { title: "Fees", url: "/dashboard/admin/fees", icon: <FaDollarSign /> },
+          { title: "Reports", url: "/dashboard/admin/reports", icon: <FaFileAlt /> },
+          { title: "Profile", url: "/dashboard/profile", icon: <FaPersonBooth /> },
+          { title: "Settings", url: "/dashboard/admin/settings", icon: <FaCog /> },
         ]
 
       case "teacher":
         return [
           ...commonItems,
-          {
-            title: "My Classes",
-            url: "/dashboard/teacher/classes",
-            icon: <FaBookOpen />,
-          },
-          {
-            title: "Attendance",
-            url: "/dashboard/teacher/attendance",
-            icon: <FaCalendarAlt />,
-          },
-          {
-            title: "Assignments",
-            url: "/dashboard/teacher/assignments",
-            icon: <FaFileAlt />,
-          },
-          {
+          { title: "My Classes", url: "/dashboard/teacher/classes", icon: <FaBookOpen /> },
+          { title: "Attendance", url: "/dashboard/teacher/attendance", icon: <FaCalendarAlt /> },
+          { title: "Assignments", url: "/dashboard/teacher/assignments", icon: <FaFileAlt /> },
+           {
             title: "Students",
-            url: "/dashboard/teacher/students",
-            icon: <FaUsers />,
+            icon: <FaGraduationCap />,
+            children: [
+              {
+                title: "Student List", url: "/dashboard/admin/students",
+                icon: undefined
+              },
+              {
+                title: "Manage Attendance", url: "/dashboard/teacher/students",
+                icon: undefined
+              },
+            ],
           },
-             {
-            title: "Profile",
-            url: "/dashboard/profile",
-            icon: <FaPersonBooth />,
-          },
+          { title: "Profile", url: "/dashboard/profile", icon: <FaPersonBooth /> },
         ]
 
       case "student":
         return [
           ...commonItems,
-          {
-            title: "My Subjects",
-            url: "/dashboard/student/subjects",
-            icon: <FaBookOpen />,
-          },
-          {
-            title: "Attendance",
-            url: "/dashboard/student/attendance",
-            icon: <FaCalendarAlt />,
-          },
-          {
-            title: "Assignments",
-            url: "/dashboard/student/assignments",
-            icon: <FaFileAlt />,
-          },
-          {
-            title: "Fees",
-            url: "/dashboard/student/fees",
-            icon: <FaDollarSign />,
-          },
-                {
-            title: "Profile",
-            url: "/dashboard/profile",
-            icon: <FaPersonBooth />,
-          },
+          { title: "My Subjects", url: "/dashboard/student/subjects", icon: <FaBookOpen /> },
+          { title: "Attendance", url: "/dashboard/student/attendance", icon: <FaCalendarAlt /> },
+          { title: "Assignments", url: "/dashboard/student/assignments", icon: <FaFileAlt /> },
+          { title: "Fees", url: "/dashboard/student/fees", icon: <FaDollarSign /> },
+          { title: "Profile", url: "/dashboard/profile", icon: <FaPersonBooth /> },
         ]
 
       default:
@@ -189,12 +166,40 @@ export function AppSidebar({ user }: AppSidebarProps) {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <span className="mr-2">{item.icon}</span>
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  {item.children ? (
+                    <>
+                      <button
+                        onClick={() => toggleMenu(item.title)}
+                        className="w-full flex items-center justify-between px-2 py-1 hover:bg-accent rounded-md"
+                      >
+                        <span className="flex items-center gap-2">
+                          {item.icon}
+                          {item.title}
+                        </span>
+                        {openMenus.includes(item.title) ? <FaChevronDown /> : <FaChevronRight />}
+                      </button>
+                      {openMenus.includes(item.title) && (
+                        <div className="ml-6 mt-1 space-y-1">
+                          {item.children.map((sub) => (
+                            <a
+                              key={sub.title}
+                              href={sub.url}
+                              className="block px-2 py-1 text-sm hover:bg-accent rounded-md"
+                            >
+                              {sub.title}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <SidebarMenuButton asChild>
+                      <a href={item.url || "#"} className="flex items-center gap-2">
+                        {item.icon}
+                        {item.title}
+                      </a>
+                    </SidebarMenuButton>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>

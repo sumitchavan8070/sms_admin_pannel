@@ -1,6 +1,16 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api/v1"
 
 class ApiClient {
+  getClassStudents() {
+    throw new Error("Method not implemented.")
+  }
+
+  
+  markAttendance(student: { student_id: number; date: string; status: "present" | "absent" | null; remarks: string }) {
+    return this.request<any>("/auth/profile")
+  }
+
+
   private baseURL: string
   private token: string | null = null
 

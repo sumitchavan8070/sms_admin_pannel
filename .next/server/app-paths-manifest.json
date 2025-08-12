@@ -1,8 +1,3 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/dashboard/student/attendance/page": "app/dashboard/student/attendance/page.js",
-  "/dashboard/teacher/attendance/page": "app/dashboard/teacher/attendance/page.js",
-  "/dashboard/profile/page": "app/dashboard/profile/page.js",
-  "/dashboard/teacher/students/page": "app/dashboard/teacher/students/page.js",
-  "/dashboard/teacher/page": "app/dashboard/teacher/page.js"
+  "/dashboard/teacher/students/page": "app/dashboard/teacher/students/page.js"
 }

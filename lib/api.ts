@@ -47,6 +47,8 @@ class ApiClient {
       const response = await fetch(url, {
         ...options,
         headers,
+        cache: "no-store", // Prevents caching in fetch
+
       })
 
       if (!response.ok) {
@@ -81,9 +83,9 @@ class ApiClient {
     return this.request("/auth/profile")
   }
 
-getClassStudents(){
-    return this.request("/class/get-students-by-class?classId=1&schoolId=1")
-
+getClassStudents(formattedDate: string){
+    return this.request(`/class/get-students-by-class?schoolId=1&date=${formattedDate}`)
+    
 }
 
 
