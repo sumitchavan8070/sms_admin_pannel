@@ -115,7 +115,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
             icon: <FaGraduationCap />,
             children: [
               {
-                title: "Student List", url: "/dashboard/admin/students",
+                title: "Fees details", url: "/dashboard/teacher/students/fees",
                 icon: undefined
               },
               {

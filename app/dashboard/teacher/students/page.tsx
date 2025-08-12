@@ -129,33 +129,40 @@ export default function AttendanceManagement() {
   const markAttendance = async () => {
     const today = format(selectedDate, "yyyy-MM-dd");
 
+    // Build bulk attendance payload
     const attendanceList = students
-      .filter((s) => s.status)
+      .filter((s) => s.status) // only students with a marked status
       .map((s) => ({
         student_id: s.id,
         date: today,
         status: s.status,
-        remarks: s.remarks,
-      }))
+        remarks: s.remarks || null,
+      }));
+
+    if (attendanceList.length === 0) {
+      toast.info("No attendance to mark. Please select at least one student's status.");
+      return;
+    }
+    console.log(attendanceList);
+
 
     try {
-      if (attendanceList.length === 0) {
-        toast.info("No attendance to mark. Please select at least one student's status.");
-        return;
-      }
+      // Bulk API call
+      const res = await api.markBulkAttendance({
+        records: attendanceList
+      });
 
-      for (const student of attendanceList) {
-        const res = await api.markAttendance(student)
-        if (res.status !== 1) {
-          toast.error(`Failed for ID ${student.student_id}`);
-        }
+      if (res.status === 1) {
+        toast.success(res.message || "Attendance marked successfully");
+      } else {
+        toast.error(res.message || "Failed to mark attendance");
       }
-      toast.success("Attendance marked successfully");
     } catch (error) {
       console.error("Error marking attendance:", error);
       toast.error("An error occurred while marking attendance");
     }
-  }
+  };
+
 
   const updateSingleAttendance = async (student: Student) => {
     if (!student.status) {

@@ -35,14 +35,14 @@ class ApiClient {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       "Accept": "application/json"
-    } 
+    }
 
     if (this.token) {
       headers["Authorization"] = `Bearer ${this.token}`
     }
 
     console.log(headers);
-    
+
     try {
       const response = await fetch(url, {
         ...options,
@@ -72,7 +72,7 @@ class ApiClient {
     })
   }
 
-  async getStaffAttendance(date :string) {
+  async getStaffAttendance(date: string) {
 
     return this.request(`/attendance/get-attendance-by-user-and-date?date=${date}`)
   }
@@ -83,10 +83,18 @@ class ApiClient {
     return this.request("/auth/profile")
   }
 
-getClassStudents(formattedDate: string){
+  getClassStudents(formattedDate: string) {
     return this.request(`/class/get-students-by-class?schoolId=1&date=${formattedDate}`)
-    
-}
+
+  }
+  markBulkAttendance(records: { records: { student_id: number; date: string; status: "present" | "absent" | null; remarks: string | null }[] }) {
+    return this.request("/attendance/mark-students-bulk-attendance", {
+      method: "POST",
+      body: JSON.stringify(records),
+    })
+  }
+
+
 
 
   // Users endpoints
@@ -127,6 +135,10 @@ getClassStudents(formattedDate: string){
     })
   }
 
+
+  getFeesList(){
+    return this.request("/class/get-fees-list-by-class-teacher")
+  }
   // Reports endpoints
   async getDashboardStats() {
     return this.request("/reports/dashboard-stats")

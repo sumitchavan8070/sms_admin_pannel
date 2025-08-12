@@ -159,10 +159,15 @@ export default function StudentAttendanceCalendar() {
       <Card>
         <CardHeader className="flex justify-between items-center px-6 py-4">
           <CardTitle className="text-xl font-bold">{format(currentMonth, "MMMM yyyy")}</CardTitle>
-          <div className="flex gap-2">
-            <Button size="icon" variant="outline" onClick={goToPreviousMonth}><ChevronLeft className="h-4 w-4" /></Button>
-            <Button size="icon" variant="outline" onClick={goToNextMonth}><ChevronRight className="h-4 w-4" /></Button>
-          </div>
+        <div className="flex justify-between ">
+  <Button size="icon" variant="outline" onClick={goToPreviousMonth}>
+    <ChevronLeft className="h-4 w-4" />
+  </Button>
+  <Button size="icon" variant="outline" onClick={goToNextMonth}>
+    <ChevronRight className="h-4 w-4" />
+  </Button>
+</div>
+
         </CardHeader>
         <CardContent className="p-6">
           <div className="grid grid-cols-7 gap-2 mb-4 text-center">

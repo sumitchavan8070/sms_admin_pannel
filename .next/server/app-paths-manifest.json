@@ -1,3 +1,5 @@
 {
+  "/dashboard/teacher/students/fees/page": "app/dashboard/teacher/students/fees/page.js",
+  "/dashboard/teacher/attendance/page": "app/dashboard/teacher/attendance/page.js",
   "/dashboard/teacher/students/page": "app/dashboard/teacher/students/page.js"
 }
