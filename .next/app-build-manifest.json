@@ -1,9 +1,25 @@
 {
   "pages": {
-    "/dashboard/teacher/students/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/teacher/students/page.js"
+      "static/chunks/app/page.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/(auth)/login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(auth)/login/page.js"
+    ],
+    "/dashboard/teacher/students/fees/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/dashboard/teacher/students/fees/page.js"
     ],
     "/dashboard/teacher/students/loading": [
       "static/chunks/webpack.js",
@@ -15,31 +31,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/layout.js"
     ],
-    "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
-    ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
-    "/(auth)/login/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(auth)/login/page.js"
-    ],
     "/dashboard/teacher/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/teacher/page.js"
     ],
-    "/dashboard/profile/page": [
+    "/dashboard/teacher/students/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/profile/page.js"
+      "static/chunks/app/dashboard/teacher/students/page.js"
     ],
     "/dashboard/teacher/attendance/page": [
       "static/chunks/webpack.js",
@@ -51,10 +51,21 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/teacher/attendance/loading.js"
     ],
-    "/dashboard/teacher/students/fees/page": [
+    "/dashboard/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/dashboard/teacher/students/fees/page.js"
+      "static/chunks/app/dashboard/profile/page.js"
+    ],
+    "/dashboard/teacher/students/fees/invoice/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/dashboard/teacher/students/fees/invoice/page.css",
+      "static/chunks/app/dashboard/teacher/students/fees/invoice/page.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
